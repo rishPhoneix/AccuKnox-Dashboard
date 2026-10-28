@@ -1,0 +1,188 @@
+{
+  "title": "CNAPP Dashboard",
+  "ranges": {
+    "2d": { "label": "Last 2 days", "factor": 1 },
+    "7d": { "label": "Last 7 days", "factor": 2.7 },
+    "30d": { "label": "Last 30 days", "factor": 9.5 }
+  },
+  "pages": [
+    { "id": "dashboard", "label": "Dashboard", "icon": "layout", "categories": null },
+    { "id": "posture", "label": "Security Posture", "icon": "shield", "categories": ["cspm"] },
+    { "id": "workloads", "label": "Workloads", "icon": "activity", "categories": ["cwpp"] },
+    { "id": "images", "label": "Image Scanning", "icon": "scan", "categories": ["registry"] }
+  ],
+  "notifications": [
+    { "id": "n1", "title": "3 critical vulnerabilities found in nginx:1.21", "time": "12 min ago", "severity": "critical" },
+    { "id": "n2", "title": "Cloud account 'aws-staging' disconnected", "time": "1 hour ago", "severity": "warning" },
+    { "id": "n3", "title": "Compliance scan finished for 2 accounts", "time": "3 hours ago", "severity": "info" },
+    { "id": "n4", "title": "Unusual traffic spike in namespace 'prod'", "time": "Yesterday", "severity": "warning" }
+  ],
+  "categories": [
+    {
+      "id": "cspm",
+      "name": "CSPM Executive Dashboard",
+      "tab": "CSPM",
+      "icon": "shield",
+      "widgets": [
+        {
+          "id": "cspm-accounts",
+          "name": "Cloud Accounts",
+          "text": "4 cloud accounts are linked to this workspace.",
+          "type": "donut",
+          "centerLabel": "Total",
+          "timeBased": false,
+          "segments": [
+            { "label": "Connected", "value": 2, "color": "primary" },
+            { "label": "Not connected", "value": 2, "color": "muted" }
+          ]
+        },
+        {
+          "id": "cspm-risk",
+          "name": "Cloud Account Risk Assessment",
+          "text": "9659 resources assessed across connected accounts.",
+          "type": "donut",
+          "centerLabel": "Total",
+          "timeBased": false,
+          "segments": [
+            { "label": "Failed", "value": 1689, "color": "danger" },
+            { "label": "Warning", "value": 681, "color": "warning" },
+            { "label": "Not available", "value": 36, "color": "neutral" },
+            { "label": "Passed", "value": 7253, "color": "success" }
+          ]
+        },
+        {
+          "id": "cspm-compliance",
+          "name": "Compliance Score",
+          "text": "Overall compliance across connected accounts.",
+          "type": "stat",
+          "active": false,
+          "timeBased": false,
+          "value": 82,
+          "unit": "%",
+          "progress": 82,
+          "delta": "+3 pts since last scan"
+        }
+      ]
+    },
+    {
+      "id": "cwpp",
+      "name": "CWPP Dashboard",
+      "tab": "CWPP",
+      "icon": "cloud",
+      "widgets": [
+        {
+          "id": "cwpp-namespace",
+          "name": "Top 5 Namespace Specific Alerts",
+          "text": "Alerts grouped by Kubernetes namespace.",
+          "type": "bar",
+          "timeBased": true,
+          "data": [
+            { "label": "default", "value": 42 },
+            { "label": "kube-system", "value": 31 },
+            { "label": "prod", "value": 24 },
+            { "label": "staging", "value": 17 },
+            { "label": "monitoring", "value": 9 }
+          ]
+        },
+        {
+          "id": "cwpp-workload",
+          "name": "Workload Alerts",
+          "text": "Workload alert trend.",
+          "type": "line",
+          "series": {
+            "2d": {
+              "labels": ["12 AM", "6 AM", "12 PM", "6 PM", "12 AM", "6 AM", "12 PM", "6 PM"],
+              "values": [4, 7, 5, 11, 8, 6, 12, 9]
+            },
+            "7d": {
+              "labels": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+              "values": [18, 25, 21, 33, 29, 14, 22]
+            },
+            "30d": {
+              "labels": ["1", "4", "7", "10", "13", "16", "19", "22", "25", "28"],
+              "values": [60, 82, 74, 95, 88, 70, 101, 93, 84, 97]
+            }
+          }
+        },
+        {
+          "id": "cwpp-runtime",
+          "name": "Runtime Threats",
+          "text": "Runtime threat detections per cluster.",
+          "type": "table",
+          "active": false,
+          "timeBased": true,
+          "columns": ["Cluster", "Threats"],
+          "rows": [
+            ["prod-cluster", 14],
+            ["staging-cluster", 8],
+            ["dev-cluster", 3]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "registry",
+      "name": "Registry Scan",
+      "tab": "Image",
+      "icon": "scan",
+      "widgets": [
+        {
+          "id": "reg-risk",
+          "name": "Image Risk Assessment",
+          "text": "1470 total vulnerabilities",
+          "type": "risk",
+          "timeBased": false,
+          "segments": [
+            { "label": "Critical", "value": 9, "color": "crit" },
+            { "label": "High", "value": 150, "color": "high" },
+            { "label": "Medium", "value": 600, "color": "med" },
+            { "label": "Low", "value": 711, "color": "low" }
+          ]
+        },
+        {
+          "id": "reg-issues",
+          "name": "Image Security Issues",
+          "text": "2 total images",
+          "type": "table",
+          "timeBased": false,
+          "columns": ["Image", "Critical", "High"],
+          "rows": [
+            ["nginx:1.21", 1, 1],
+            ["redis:6.0", 1, 1]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ticket",
+      "name": "Ticket Summary",
+      "tab": "Ticket",
+      "icon": "ticket",
+      "widgets": [
+        {
+          "id": "tkt-open",
+          "name": "Open Tickets",
+          "text": "Tickets waiting for action.",
+          "type": "stat",
+          "active": false,
+          "timeBased": false,
+          "value": 12,
+          "unit": "",
+          "delta": "4 assigned to you"
+        },
+        {
+          "id": "tkt-resolved",
+          "name": "Resolved Tickets",
+          "text": "Tickets resolved over time.",
+          "type": "line",
+          "active": false,
+          "series": {
+            "2d": { "labels": ["12 AM", "6 AM", "12 PM", "6 PM", "12 AM", "6 AM", "12 PM", "6 PM"], "values": [1, 0, 3, 2, 1, 4, 2, 3] },
+            "7d": { "labels": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], "values": [5, 7, 4, 9, 8, 2, 6] },
+            "30d": { "labels": ["1", "4", "7", "10", "13", "16", "19", "22", "25", "28"], "values": [14, 19, 17, 24, 22, 15, 26, 21, 20, 25] }
+          }
+        }
+      ]
+    }
+  ]
+}
